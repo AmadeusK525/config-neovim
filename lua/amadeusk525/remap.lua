@@ -27,3 +27,13 @@ vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 vim.keymap.set("v", "<C-r>", "\"hy:%s/<C-r>h//gc<left><left><left>")
+
+vim.keymap.set("v", "<leader>(", "di()<Esc>Pva(")
+vim.keymap.set("v", "<leader>{", "di{}<Esc>Pva{")
+vim.keymap.set("v", "<leader>\"", "di\"\"<Esc>Pva\"")
+vim.keymap.set("v", "<leader>'", "di''<Esc>Pva'")
+
+vim.keymap.set("n", "<leader>-(", "di(hPl2x")
+vim.keymap.set("n", "<leader>-{", "di{hPl2x")
+vim.keymap.set("n", "<leader>-\"", "di\"hPl2x")
+vim.keymap.set("n", "<leader>-'", "di'hPl2x")
