@@ -45,4 +45,6 @@ return require('packer').startup(function(use)
 
     use('xiyaowong/nvim-cursorword')
     use('yamatsum/nvim-cursorline')
+
+    use('lewis6991/gitsigns.nvim')
 end)
