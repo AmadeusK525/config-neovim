@@ -1,16 +1,108 @@
 local lsp = require('lsp-zero').preset('recommended')
+local lspconfig = require('lspconfig')
 local lsp_signature = require('lsp_signature')
 
-lsp.ensure_installed({
-    'eslint',
-    'clangd',
-    'cmake',
-    'dockerls',
-    'gopls',
-    'graphql',
-    'quick_lint_js',
-    'tsserver',
-    'pylsp'
+local mason = require('mason')
+local masonconfig = require('mason-lspconfig')
+
+mason.setup()
+masonconfig.setup {
+    ensure_installed = {
+        'autotools_ls',
+        'bashls',
+        'clangd',
+        'cmake',
+        'cssls',
+        'gopls',
+        'graphql',
+        'html',
+        'jsonls',
+        'lemminx',
+        'lua_ls',
+        'marksman',
+        'pyright',
+        'ruby_ls',
+        'terraformls',
+        'tsserver',
+        'yamlls',
+    },
+    handlers = {
+        lsp.default_setup,
+        cssls = function()
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities.textDocument.completion.completionItem.snippetSupport = true
+            lspconfig.cssls.setup {
+                on_attach = lsp.on_attach,
+                capabilities = capabilities,
+            }
+        end,
+        html = function()
+            lspconfig.html.setup {
+                on_attach = lsp.on_attach,
+                init_options = {
+                    provideFormatter = true
+                }
+            }
+        end,
+        jsonls = function()
+            lspconfig.tsserver.setup {
+                on_attach = lsp.on_attach,
+                settings = {
+                    format = {
+                        enable = true
+                    }
+                }
+            }
+        end,
+        tsserver = function()
+            local format_settings = {
+                convertTabsToSpaces = true,
+                indentSize = 2,
+                semicolons = 'remove',
+                tabSize = 2,
+                trimTrailingWhitespace = true,
+            }
+            lspconfig.tsserver.setup {
+                on_attach = lsp.on_attach,
+                settings = {
+                    typescript = {
+                        format = format_settings,
+                    },
+                    javascript = {
+                        format = format_settings,
+                    },
+                }
+            }
+        end,
+        yamlls = function()
+            lspconfig.yamlls.setup {
+                on_attach = lsp.on_attach,
+                settings = {
+                    yaml = {
+                        completion = true,
+                        format = {
+                            enabled = true,
+                            singleQuote = false,
+                        },
+                        hover = true,
+                        schemas = {
+                            ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] = {
+                                "*openapi.yaml",
+                                "*openapi.json",
+                            },
+                        },
+                        schemaStore = {
+                            enable = true,
+                        },
+                    }
+                }
+            }
+        end,
+    }
+}
+
+lsp.set_preferences({
+    sign_icons = {}
 })
 
 local cmp = require('cmp')
@@ -22,9 +114,6 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ["<C-Space>"] = cmp.mapping.complete(),
 })
 
-lsp.set_preferences({
-    sign_icons = {}
-})
 lsp.setup_nvim_cmp({
     mapping = cmp_mappings
 })
