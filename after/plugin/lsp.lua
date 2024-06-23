@@ -118,6 +118,15 @@ lsp.setup_nvim_cmp({
     mapping = cmp_mappings
 })
 
+local code_action_kind_fixes = {
+    "quickfix",
+    "source.organizeImports",
+}
+
+local code_action_kind_refactors = {
+    "refactor",
+}
+
 lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
@@ -136,10 +145,31 @@ lsp.on_attach(function(client, bufnr)
         vim.api.nvim_feedkeys("zz", "n", false)
     end, opts)
     vim.keymap.set("n", "[]", function() vim.diagnostic.setqflist { show = true } end, opts)
-    vim.keymap.set("n", "<leader>qf", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>qf", function()
+        vim.lsp.buf.code_action({
+            context = {
+                only = code_action_kind_fixes,
+            }
+        })
+    end, opts)
+    vim.keymap.set("n", "<leader>qr", function()
+        vim.lsp.buf.code_action({
+            context = {
+                only = code_action_kind_refactors,
+            }
+        })
+    end, opts)
+    vim.keymap.set("n", "<leader>ln", function()
+        vim.lsp.buf.code_action({
+            apply = true,
+            context = {
+                only = { "source.fixAll" },
+            }
+        })
+    end, opts)
     vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set("n", "<C-h>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "<leader>he", vim.lsp.buf.signature_help, opts)
 
     -- Symbol highlight --
     if client.server_capabilities.documentHighlightProvider then
