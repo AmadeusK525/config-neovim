@@ -10,6 +10,7 @@ masonconfig.setup {
     ensure_installed = {
         'autotools_ls',
         'bashls',
+        'biome',
         'clangd',
         'cmake',
         'cssls',
@@ -21,13 +22,18 @@ masonconfig.setup {
         'lua_ls',
         'marksman',
         'pyright',
-        'ruby_ls',
         'terraformls',
         'tsserver',
         'yamlls',
     },
     handlers = {
         lsp.default_setup,
+        biome = function()
+            lspconfig.biome.setup {
+                on_attach = lsp.on_attach,
+                root_dir = lspconfig.util.root_pattern("package.json", "jsconfig.json", "tsconfig.json", ".git", "biome.json", "biome.jsonc"),
+            }
+        end,
         cssls = function()
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -55,23 +61,29 @@ masonconfig.setup {
             }
         end,
         tsserver = function()
-            local format_settings = {
-                convertTabsToSpaces = true,
-                indentSize = 2,
-                semicolons = 'remove',
-                tabSize = 2,
-                trimTrailingWhitespace = true,
-            }
+            -- Disable formatting because that will be handled by 'biome'
+            -- local format_settings = {
+            --     convertTabsToSpaces = true,
+            --     indentSize = 4,
+            --     indentStyle = 'Smart',
+            --     semicolons = 'insert',
+            --     tabSize = 4,
+            --     trimTrailingWhitespace = true,
+            -- }
             lspconfig.tsserver.setup {
-                on_attach = lsp.on_attach,
-                settings = {
-                    typescript = {
-                        format = format_settings,
-                    },
-                    javascript = {
-                        format = format_settings,
-                    },
-                }
+                on_attach = function(client, bufnr)
+                    client.server_capabilities.documentFormattingProvider = false
+                    client.server_capabilities.documentRangeFormattingProvider = false
+                    lsp.on_attach(client, bufnr)
+                end,
+                -- settings = {
+                --     typescript = {
+                --         format = format_settings,
+                --     },
+                --     javascript = {
+                --         format = format_settings,
+                --     },
+                -- }
             }
         end,
         yamlls = function()
