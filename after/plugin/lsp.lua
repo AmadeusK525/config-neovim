@@ -92,7 +92,7 @@ masonconfig.setup {
             }
         end,
         jsonls = function()
-            lspconfig.tsserver.setup {
+            lspconfig.jsonls.setup {
                 on_attach = lsp.on_attach,
                 settings = {
                     format = {
