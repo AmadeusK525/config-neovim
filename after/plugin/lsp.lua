@@ -14,7 +14,6 @@ masonconfig.setup {
         'clangd',
         'cmake',
         'cssls',
-        'gopls',
         'graphql',
         'html',
         'jsonls',
