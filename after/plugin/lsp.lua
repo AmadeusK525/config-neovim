@@ -22,7 +22,7 @@ masonconfig.setup {
         'marksman',
         'pyright',
         'terraformls',
-        'tsserver',
+        'ts_ls',
         'yamlls',
     },
     handlers = {
@@ -101,7 +101,7 @@ masonconfig.setup {
                 }
             }
         end,
-        tsserver = function()
+        ts_ls = function()
             -- Disable formatting because that will be handled by 'biome'
             -- local format_settings = {
             --     convertTabsToSpaces = true,
@@ -111,7 +111,7 @@ masonconfig.setup {
             --     tabSize = 4,
             --     trimTrailingWhitespace = true,
             -- }
-            lspconfig.tsserver.setup {
+            lspconfig.ts_ls.setup {
                 on_attach = function(client, bufnr)
                     client.server_capabilities.documentFormattingProvider = false
                     client.server_capabilities.documentRangeFormattingProvider = false
