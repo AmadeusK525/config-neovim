@@ -1,4 +1,8 @@
 require('kanagawa').setup({
+    background = {
+        dark = "dragon",
+        light = "dragon",
+    },
     undercurl = false,
     commentStyle = { italic = true },
     theme = "dragon",

@@ -117,6 +117,13 @@ masonconfig.setup {
                     client.server_capabilities.documentRangeFormattingProvider = false
                     lsp.on_attach(client, bufnr)
                 end,
+                init_options = {
+                    preferences = {
+                        includeCompletionsForModuleExports = true,
+                        includeCompletionsForImportStatements = true,
+                        importModuleSpecifierPreference = "non-relative",
+                    }
+                },
                 -- settings = {
                 --     typescript = {
                 --         format = format_settings,
@@ -157,6 +164,20 @@ masonconfig.setup {
 lsp.set_preferences({
     sign_icons = {}
 })
+
+lspconfig.sourcekit.setup {
+    on_attach = function(client, bufnr)
+        client.server_capabilities.semanticTokensProvider = nil
+        lsp.on_attach(client, bufnr)
+    end,
+    filetypes = { "swift", "objc", "objcpp" },
+}
+
+lspconfig.dartls.setup {
+    on_attach = lsp.on_attach,
+    filetypes = { "dart" },
+    cmd = { "dart", "language-server", "--protocol=lsp" },
+}
 
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
