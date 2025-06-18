@@ -4,7 +4,6 @@ return {
     lazy = false,
     config = function()
         require("kanagawa").setup({
-            compile = true,
             background = {
                 dark = "dragon",
                 light = "dragon",
@@ -12,8 +11,6 @@ return {
             undercurl = false,
             commentStyle = { italic = true },
             theme = "dragon",
-            dimInactive = true,
-            transparent = true,
             overrides = function(colors)
                 local theme = colors.theme
 
@@ -44,6 +41,12 @@ return {
                     TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
                     TelescopePreviewNormal = { bg = theme.ui.bg_dim },
                     TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+
+                    LspReferenceText = { bg = theme.ui.bg_p1 },
+                    LspReferenceRead = { bg = theme.ui.bg_p1 },
+                    LspReferenceWrite = { bg = theme.ui.bg_p1 },
+
+                    CursorLine = { bg = theme.ui.bg_p1 },
                 }
             end,
         })
@@ -53,11 +56,5 @@ return {
         vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
         vim.cmd.colorscheme("kanagawa")
-
-        vim.cmd [[
-            hi LspReferenceRead cterm=bold ctermbg=65 guibg=#303030
-            hi LspReferenceText cterm=bold ctermbg=65 guibg=#303030
-            hi LspReferenceWrite cterm=bold ctermbg=65 guibg=#303030
-        ]]
     end,
 }

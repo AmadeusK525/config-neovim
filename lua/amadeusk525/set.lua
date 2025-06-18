@@ -3,6 +3,9 @@ vim.opt.guicursor = ""
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
 
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "both"
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
