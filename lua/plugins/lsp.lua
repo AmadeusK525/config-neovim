@@ -9,7 +9,29 @@ return {
             "saghen/blink.cmp",
             version = "1.3.1",
             opts = {
-                signature = { enabled = true }
+                completion = {
+                    sources = {
+                        per_filetype = {
+                            codecompanion = { "codecompanion" },
+                        },
+                    },
+                    list = {
+                        selection = {
+                            preselect = true,
+                            auto_insert = false,
+                        },
+                    },
+                    ghost_text = {
+                        enabled = false,
+                    },
+                    documentation = {
+                        auto_show = true,
+                        auto_show_delay_ms = 10,
+                    },
+                },
+                signature = {
+                    enabled = true,
+                },
             },
         },
     },
