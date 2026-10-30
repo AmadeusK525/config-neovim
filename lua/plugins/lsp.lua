@@ -1,5 +1,18 @@
+local code_action_kind_fixes = {
+    "quickfix",
+}
+local code_action_kind_refactors = {
+    "refactor",
+    "refactor.extract",
+    "refactor.inline",
+    "refactor.move",
+    "refactor.rewrite",
+}
+
 return {
     "neovim/nvim-lspconfig",
+
+    event = "VeryLazy",
 
     opts = {},
     dependencies = {
@@ -10,11 +23,6 @@ return {
             version = "1.3.1",
             opts = {
                 completion = {
-                    sources = {
-                        per_filetype = {
-                            codecompanion = { "codecompanion" },
-                        },
-                    },
                     list = {
                         selection = {
                             preselect = true,
@@ -29,6 +37,11 @@ return {
                         auto_show_delay_ms = 10,
                     },
                 },
+                sources = {
+                    per_filetype = {
+                        codecompanion = { "codecompanion" },
+                    },
+                },
                 signature = {
                     enabled = true,
                 },
@@ -38,6 +51,8 @@ return {
     config = function()
         require("mason").setup()
         require("mason-lspconfig").setup()
+
+        vim.lsp.log.set_level(vim.log.levels.DEBUG)
 
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
@@ -51,12 +66,12 @@ return {
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
                 vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
                 vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
-                vim.keymap.set("n", "[d", function()
-                    vim.diagnostic.goto_next()
+                vim.keymap.set("n", "]d", function()
+                    vim.diagnostic.jump({ count = 1, float = true })
                     vim.api.nvim_feedkeys("zz", "n", false)
                 end, opts)
-                vim.keymap.set("n", "]d", function()
-                    vim.diagnostic.goto_prev()
+                vim.keymap.set("n", "[d", function()
+                    vim.diagnostic.jump({ count = -1, float = true })
                     vim.api.nvim_feedkeys("zz", "n", false)
                 end, opts)
                 vim.keymap.set("n", "[]", function() vim.diagnostic.setqflist { show = true } end, opts)
@@ -78,6 +93,7 @@ return {
                     vim.lsp.buf.code_action({
                         apply = true,
                         context = {
+                            diagnostics = vim.diagnostic.get(bufnr),
                             only = { "source.fixAll" },
                         }
                     })
