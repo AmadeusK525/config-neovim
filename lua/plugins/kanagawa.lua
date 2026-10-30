@@ -8,6 +8,7 @@ return {
                 dark = "dragon",
                 light = "dragon",
             },
+            transparent = true,
             undercurl = false,
             commentStyle = { italic = true },
             theme = "dragon",
