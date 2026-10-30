@@ -1,7 +1,9 @@
 return {
     "nvim-telescope/telescope.nvim",
 
-    version = "0.1.8",
+    event = "VeryLazy",
+
+    version = "0.2.2",
     dependencies = {
         { "nvim-lua/plenary.nvim" },
         {
@@ -54,20 +56,26 @@ return {
             return table.concat(lines, "\n")
         end
 
-        vim.keymap.set('n', '<leader>pf', builtin.find_files)
-        vim.keymap.set('n', '<leader>pa', function()
+        vim.keymap.set('n', '<leader>sf', builtin.find_files)
+        vim.keymap.set('n', '<leader>saf', function()
             builtin.find_files({ hidden = true, no_ignore = true })
         end)
-        vim.keymap.set('n', '<leader>pg', builtin.git_files)
-        vim.keymap.set('n', '<leader>ps', function()
+        vim.keymap.set('n', '<leader>sgf', builtin.git_files)
+        vim.keymap.set('n', '<leader>st', function()
             builtin.grep_string({ search = vim.fn.input("Grep > ") });
+        end)
+        vim.keymap.set('n', '<leader>sat', function()
+            builtin.grep_string({ search = vim.fn.input("Grep > "), additional_args = { "--hidden" } });
         end)
         vim.keymap.set('n', '<C-f>', builtin.grep_string)
         vim.keymap.set('v', '<C-f>', function()
             local text = get_visual_selection()
             builtin.grep_string({ search = text });
         end)
-        vim.keymap.set('n', '<leader>lps', builtin.live_grep)
+        vim.keymap.set('n', '<leader>slt', builtin.live_grep)
+        vim.keymap.set('n', '<leader>salt', function()
+            builtin.live_grep({ additional_args = { "--hidden" } });
+        end)
         vim.keymap.set('n', '<leader>er', builtin.diagnostics)
         vim.keymap.set('n', '<leader>tig', builtin.git_bcommits)
         vim.keymap.set('n', '<leader>gtig', builtin.git_commits)
