@@ -1,7 +1,6 @@
 return {
-    "github/copilot.vim",
+    "zbirenbaum/copilot.lua",
+    enabled = false,
 
-    config = function()
-        vim.cmd("Copilot disable") -- I don't want this shitty autocomplete, only using to setup for CodeCompanion
-    end,
+    opts = {},
 }
