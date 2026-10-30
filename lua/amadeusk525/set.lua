@@ -1,7 +1,11 @@
 vim.opt.guicursor = ""
 
 vim.opt.spelllang = "en_us"
-vim.opt.spell = true
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function()
+        vim.opt_local.spell = true
+    end,
+})
 
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "both"
@@ -38,8 +42,6 @@ vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "100"
 
-vim.g.mapleader = " "
-
 vim.api.nvim_create_autocmd("InsertEnter", {
     callback = function()
         vim.opt.relativenumber = false
@@ -51,3 +53,5 @@ vim.api.nvim_create_autocmd("InsertLeave", {
         vim.opt.relativenumber = true
     end
 })
+
+vim.diagnostic.config({ float = true })
