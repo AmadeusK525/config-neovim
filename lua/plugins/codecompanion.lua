@@ -39,30 +39,8 @@ return {
 				acp = {
 					opencode = function()
 						return require("codecompanion.adapters.acp").extend("opencode", {
-							env = {
-								XDG_CONFIG_HOME = "/Users/amadeusk525/.snoocode/opencode-config",
-							},
 							defaults = {
 								mcpServers = "inherit_from_config",
-							},
-						})
-					end,
-					codex = function()
-						return require("codecompanion.adapters.acp").extend("codex", {
-							commands = {
-								default = {
-									"npm",
-									"--prefix",
-									"/Users/amadeusk525/Documents/amadeus/codex-acp",
-									"start",
-								},
-							},
-							defaults = {
-								auth_method = "chat-gpt",
-								mcpServers = "inherit_from_config",
-							},
-							env = {
-								APP_SERVER_LOGS = "/tmp/codex-acp-logs",
 							},
 						})
 					end,
